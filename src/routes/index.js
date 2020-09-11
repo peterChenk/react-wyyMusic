@@ -15,6 +15,7 @@ const SuspenseComponent = Component => props => {
 // const SingersComponent = lazy(() => import("../application/Singers/"));
 // const SingersComponent = lazy(() => import("../application/Singers/"));
 const RankComponent = lazy(() => import("../application/Rank/"));
+const AlbumComponent = lazy(() => import("../application/Album/"));
 
 export default [
   {
@@ -33,12 +34,12 @@ export default [
             path: "/rank/",
             component: SuspenseComponent(RankComponent),
             key: "rank",
-            // routes: [
-            //   {
-            //     path: "/rank/:id",
-            //     component: SuspenseComponent(AlbumComponent)
-            //   }
-            // ]
+            routes: [
+              {
+                path: "/rank/:id",
+                component: SuspenseComponent(AlbumComponent)
+              }
+            ]
           }
         ]
       }
