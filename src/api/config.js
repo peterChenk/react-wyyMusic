@@ -14,4 +14,10 @@ axiosInstance.interceptors.response.use(
   }
 );
 
+//歌单一页限定歌曲数量
+export const ONE_PAGE_COUNT = 50;
+
+//顶部的高度
+export const HEADER_HEIGHT = 45;
+
 export { axiosInstance };

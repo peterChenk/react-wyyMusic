@@ -1,8 +1,10 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { connect } from 'react-redux';
 import Scroll from '../../baseUI/scroll/index';
 import { getAlbumList } from './store/actionCreators'
 import { Container } from "./style";
+import { HEADER_HEIGHT } from './../../api/config';
+import style from "../../assets/global-style";
 import { CSSTransition } from "react-transition-group";
 import Header from './../../baseUI/header/index';
 import { isEmptyObject } from '../../api/utils';
@@ -13,11 +15,11 @@ function Album (props) {
 
   const [showStatus, setShowStatus] = useState(true);
   const [isMarquee, setIsMarquee] = useState(false);
+  const [title, setTitle] = useState("歌单");
   const id = props.match.params.id;
 
   const { currentAlbum } = props
   const { getAlbumDataDispatch } = props
-  console.log('currentAlbum', currentAlbum)
   let currentAlbumJS = currentAlbum.toJS()
 
   const headerEl = useRef();
@@ -31,9 +33,22 @@ function Album (props) {
     setShowStatus(false);
   }
   
-  const handleScroll = () => {
-
-  }
+  const handleScroll = useCallback((pos) => {
+    let minScrollY = -HEADER_HEIGHT;
+    let percent = Math.abs(pos.y/minScrollY);
+    let headerDom = headerEl.current;
+    if(pos.y < minScrollY) {
+      headerDom.style.backgroundColor = style["theme-color"];
+      headerDom.style.opacity = Math.min(1, (percent-1)/2);
+      setTitle(currentAlbumJS&&currentAlbumJS.name);
+      setIsMarquee(true);
+    } else{
+      headerDom.style.backgroundColor = "";
+      headerDom.style.opacity = 1;
+      setTitle("歌单");
+      setIsMarquee(false);
+    }
+  }, [currentAlbumJS]);
   const handlePullUp = () => {
 
   }
@@ -51,7 +66,7 @@ function Album (props) {
       onExited={props.history.goBack}
     >
       <Container>
-        <Header ref={headerEl} title={'返回'} handleClick={handleBack} isMarquee={isMarquee}></Header>
+        <Header ref={headerEl} title={title} handleClick={handleBack} isMarquee={isMarquee}></Header>
         {
           !isEmptyObject(currentAlbumJS) ? (
             <Scroll 
