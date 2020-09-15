@@ -15,3 +15,13 @@ export const getRankListRequest = () => {
 export const getAlbumDetailRequest = id => {
   return axiosInstance.get(`/playlist/detail?id=${id}`);
 };
+
+export const getHotSingerListRequest = count => {
+  return axiosInstance.get(`/top/artists?offset=${count}`);
+};
+
+export const getSingerListRequest = (category, alpha, count) => {
+  return axiosInstance.get(
+    `/artist/list?cat=${category}&initial=${alpha.toLowerCase()}&offset=${count}`
+  );
+};

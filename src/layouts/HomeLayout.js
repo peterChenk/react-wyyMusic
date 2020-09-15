@@ -40,9 +40,9 @@ function Home(props) {
             <span>排行榜</span>
           </TabItem>
         </NavLink>
-        {/* 渲染子路由 */}
-        {renderRoutes(route.routes)}
       </Tab>
+      {/* 渲染子路由 */}
+      {renderRoutes(route.routes)}
     </div>
   )
 }
