@@ -7,6 +7,7 @@ import { getSingerInfo, changeEnterLoading } from "./store/actionCreators";
 import Scroll from "../../baseUI/scroll/index";
 import SongsList from "../SongList/";
 import { HEADER_HEIGHT } from "./../../api/config";
+import MusicNote from "../../baseUI/music-note/index";
 
 
 function Singer(props) {
@@ -126,6 +127,7 @@ function Singer(props) {
             ></SongsList>
           </Scroll>
         </SongListWrapper>
+        <MusicNote ref={musicNoteRef}></MusicNote>
       </Container>
     </CSSTransition>
   )

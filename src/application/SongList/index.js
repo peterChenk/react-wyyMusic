@@ -3,18 +3,26 @@ import { SongList, SongItem } from "./style";
 import { getName } from '../../api/utils';
 import { ONE_PAGE_COUNT } from '../../api/config';
 
-const selectItem = () => {
 
-}
 
 const SongsList = React.forwardRef((props, refs) => {
-  const { songs } = props
+  const { songs, musicAnimation, showCollect, collectCount } = props
 
   const totalCount = songs.length
 
   const [startIndex, setStartIndex] = useState(0);
 
   const usePageSplit = false
+
+  useEffect(() => {
+    if(startIndex + 1 + ONE_PAGE_COUNT >= totalCount)
+      return;
+    setStartIndex(startIndex + ONE_PAGE_COUNT);
+  }, [startIndex, totalCount])
+
+  const selectItem = (e) => {
+    musicAnimation(e.nativeEvent.clientX, e.nativeEvent.clientY);
+  }
 
   const songList = (list) => {
     let res = []
@@ -39,6 +47,21 @@ const SongsList = React.forwardRef((props, refs) => {
     return res
   }
 
+  // const showCollect = false
+  // const collectCount = 0
+
+  const collect = (count) => {
+    return  (
+      <div className="add_list">
+        <i className="iconfont">&#xe62d;</i>
+        <span>收藏({Math.floor(count/1000)/10}万)</span>
+      </div>
+      // <div className="isCollected">
+      //   <span>已收藏({Math.floor(count/1000)/10}万)</span>
+      // </div>
+    )
+  };
+
   return (
     <SongList ref={refs} showBackground={props.showBackground}>
       <div className="first_line">
@@ -46,7 +69,7 @@ const SongsList = React.forwardRef((props, refs) => {
           <i className="iconfont">&#xe6e3;</i>
           <span>播放全部 <span className="sum">(共{totalCount}首)</span></span>
         </div>
-        {/* { showCollect ? collect(collectCount) : null} */}
+        { showCollect ? collect(collectCount) : null}
       </div>
       <SongItem>
         { songList(songs) }
