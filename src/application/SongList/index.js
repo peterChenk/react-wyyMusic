@@ -2,11 +2,13 @@ import React, {useState, useEffect } from 'react';
 import { SongList, SongItem } from "./style";
 import { getName } from '../../api/utils';
 import { ONE_PAGE_COUNT } from '../../api/config';
-
+import { connect } from 'react-redux';
+import { changePlayList, changeCurrentIndex, changeSequecePlayList } from './../../application/Player/store/actionCreators';
 
 
 const SongsList = React.forwardRef((props, refs) => {
   const { songs, musicAnimation, showCollect, collectCount } = props
+  const {changePlayListDispatch, changeSequecePlayListDispatch, changeCurrentIndexDispatch} = props
 
   const totalCount = songs.length
 
@@ -20,7 +22,10 @@ const SongsList = React.forwardRef((props, refs) => {
     setStartIndex(startIndex + ONE_PAGE_COUNT);
   }, [startIndex, totalCount])
 
-  const selectItem = (e) => {
+  const selectItem = (e, index) => {
+    changePlayListDispatch(songs);
+    changeSequecePlayListDispatch(songs);
+    changeCurrentIndexDispatch(index);
     musicAnimation(e.nativeEvent.clientX, e.nativeEvent.clientY);
   }
 
@@ -78,5 +83,28 @@ const SongsList = React.forwardRef((props, refs) => {
   )
 })
 
+// 映射Redux全局的state到组件的props上
+const mapStateToProps = (state) => ({
+  fullScreen: state.getIn(['player', 'fullScreen']),
+  playing: state.getIn(['player', 'playing']),
+  currentSong: state.getIn(['player', 'currentSong']),
+  scrollY: state.getIn(['album', 'scrollY'])  
+});
+// 映射dispatch到props上
+const mapDispatchToProps = (dispatch) => {
+  return {
+    changePlayListDispatch(data){
+      dispatch(changePlayList(data));
+    },
+    changeCurrentIndexDispatch(data) {
+      dispatch(changeCurrentIndex(data));
+    },
+    changeSequecePlayListDispatch(data) {
+      dispatch(changeSequecePlayList(data))
+    }
+  }
+};
 
-export default React.memo(SongsList)
+
+// 将ui组件包装成容器组件
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(SongsList));

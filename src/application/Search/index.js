@@ -11,7 +11,7 @@ import Loading from './../../baseUI/loading/index';
 import MusicalNote from '../../baseUI/music-note';
 import { SongItem } from '../Album/style';
 import { getName } from '../../api/utils';
-// import { getSongDetail } from './../Player/store/actionCreators';
+import { getSongDetail } from './../Player/store/actionCreators';
 
 
 function Search(props) {
@@ -24,7 +24,7 @@ function Search(props) {
     songsList: immutableSongsList,
     songsCount } = props
 
-  const { getHotKeyWordsDispatch, getSuggestListDispatch } = props
+  const { getHotKeyWordsDispatch, getSuggestListDispatch, getSongDetailDispatch } = props
 
   const suggestList = immutableSuggestList.toJS();
   const songsList = immutableSongsList.toJS();
@@ -113,8 +113,8 @@ function Search(props) {
     )
   }
 
-  const selectItem = (e) => {
-    // getSongDetailDispatch(id);
+  const selectItem = (e, id) => {
+    getSongDetailDispatch(id);
     musicNoteRef.current.startAnimation({x:e.nativeEvent.clientX, y:e.nativeEvent.clientY});
   }
 
@@ -201,7 +201,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(getSuggestList(data));
     },
     getSongDetailDispatch(id) {
-      // dispatch(getSongDetail(id));
+      dispatch(getSongDetail(id));
     }
   }
 }

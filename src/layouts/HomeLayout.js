@@ -2,6 +2,7 @@ import React from "react";
 import { renderRoutes } from "react-router-config";
 import { Top, Tab, TabItem } from "./HomeLayout.style";
 import { NavLink } from "react-router-dom";
+import Player from "../application/Player/index";
 
 
 function Home(props) {
@@ -43,6 +44,7 @@ function Home(props) {
       </Tab>
       {/* 渲染子路由 */}
       {renderRoutes(route.routes)}
+      <Player></Player>
     </div>
   )
 }

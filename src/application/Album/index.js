@@ -9,6 +9,7 @@ import { CSSTransition } from "react-transition-group";
 import Header from './../../baseUI/header/index';
 import { isEmptyObject } from '../../api/utils';
 import AlbumDetail from '../../components/album-detail/index';
+import MusicNote from '../../baseUI/music-note/index';
 
 
 function Album (props) {
@@ -23,6 +24,7 @@ function Album (props) {
   let currentAlbumJS = currentAlbum.toJS()
 
   const headerEl = useRef();
+  const musicNoteRef = useRef();
 
   useEffect(() => {
     getAlbumDataDispatch(id)
@@ -55,6 +57,9 @@ function Album (props) {
   const pullUpLoading = () => {
 
   }
+  const musicAnimation = (x, y) => {
+    musicNoteRef.current.startAnimation({x, y});
+  }
 
   return (
     <CSSTransition
@@ -74,10 +79,11 @@ function Album (props) {
               pullUp={handlePullUp} 
               bounceTop={false}
             >
-              <AlbumDetail currentAlbum={currentAlbumJS} pullUpLoading={pullUpLoading}></AlbumDetail>
+              <AlbumDetail currentAlbum={currentAlbumJS} pullUpLoading={pullUpLoading} musicAnimation={musicAnimation}></AlbumDetail>
             </Scroll>
           ) : null
         }
+        <MusicNote ref={musicNoteRef}></MusicNote>
       </Container>
     </CSSTransition>
   )
