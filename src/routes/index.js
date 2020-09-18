@@ -69,7 +69,13 @@ export default [
             exact: true,
             key: "search",
             component: SuspenseComponent(SearchComponent)
-          }
+          },
+          {
+            path: "/album/:id",
+            exact: true,
+            key: "album",
+            component: SuspenseComponent(AlbumComponent)
+          },
         ]
       }
     ]

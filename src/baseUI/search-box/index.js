@@ -53,6 +53,7 @@ const SearchBox = (props) => {
   }, []);
 
   useEffect(() => {
+    console.log('qq11')
     handleQueryDebounce(query);
     // eslint-disable-next-line 
   }, [query]);
