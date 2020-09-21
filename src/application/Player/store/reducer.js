@@ -54,8 +54,23 @@ const handleInsertSong = (state, song) => {
   });
 }
 
-const handleDeleteSong = () => {
+const handleDeleteSong = (state, song) => {
+  const playList = JSON.parse(JSON.stringify(state.get('playList').toJS()));
+  const sequenceList = JSON.parse(JSON.stringify(state.get('sequencePlayList').toJS()));
+  let currentIndex = state.get('currentIndex');
+
+  const fpIndex = findIndex(song, playList);
+  playList.splice(fpIndex, 1);
+  if(fpIndex < currentIndex) currentIndex--;
   
+  const fsIndex = findIndex(song, sequenceList);
+  sequenceList.splice(fsIndex, 1);
+
+  return state.merge({
+    'playList': fromJS(playList),
+    'sequencePlayList': fromJS(sequenceList),
+    'currentIndex': fromJS(currentIndex),
+  });
 }
 
 const redcuer = (state = defaultState, action) => {

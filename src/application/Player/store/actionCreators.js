@@ -37,6 +37,16 @@ export const insertSong = (data) => ({
   data
 });
 
+export const deleteSong = (data) => ({
+  type: DELETE_SONG,
+  data
+});
+
+export const changePlayMode = (data) => ({
+  type: SET_PLAY_MODE,
+  data
+});
+
 export const getSongDetail = (id) => {
   return (dispatch) => {
     getSongDetailRequest(id).then(data => {

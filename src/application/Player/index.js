@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { isEmptyObject, shuffle, findIndex, getSongUrl } from "../../api/utils";
 import MiniPlayer from "./mini-player";
+import PlayList from "./play-list/index";
 import {
   changeCurrentSong,
   changePlayingState,
@@ -12,6 +13,7 @@ function Player (props) {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [currentPlayingLyric, setPlayingLyric] = useState("");
+  const [modeText, setModeText] = useState("");
 
   let percent = isNaN(currentTime / duration) ? 0 : currentTime / duration;
   console.log('percent', percent)
@@ -37,6 +39,7 @@ function Player (props) {
   const songReady = useRef(true);
 
   useEffect(() => {
+    console.log('useEffect1', currentIndex)
     if (
       !playList.length ||
       currentIndex === -1 ||
@@ -44,6 +47,7 @@ function Player (props) {
       playList[currentIndex].id === preSong.id ||
       !songReady.current
     ) return;
+    console.log('useEffect22', currentIndex)
     songReady.current = false;
     let current = playList[currentIndex];
     changeCurrentDispatch(current);
@@ -53,11 +57,16 @@ function Player (props) {
     audioRef.current.autoplay = true;
     audioRef.current.playbackRate = speed;
     togglePlayingDispatch(true);
+    getLyric(current.id);
     setCurrentTime(0);
     setDuration((current.dt / 1000) | 0);
 
     // eslint-disable-next-line
   }, [currentIndex, playList])
+
+  useEffect(() => {
+    playing ? audioRef.current.play() : audioRef.current.pause();
+  }, [playing]);
 
   const clickPlaying = (e, state) => {
     e.stopPropagation();
@@ -81,6 +90,37 @@ function Player (props) {
     //   handleNext();
     // }
   };
+  const getLyric = id => {
+    setTimeout(() => {
+      songReady.current = true;
+    }, 3000);
+    // let lyric = "";
+    // if (currentLyric.current) {
+    //   currentLyric.current.stop();
+    // }
+    // // 避免songReady恒为false的情况
+    // setTimeout(() => {
+    //   songReady.current = true;
+    // }, 3000);
+    // getLyricRequest(id)
+    //   .then(data => {
+    //     lyric = data.lrc && data.lrc.lyric;
+    //     if(!lyric) {
+    //       currentLyric.current = null;
+    //       return;
+    //     }
+    //     currentLyric.current = new Lyric(lyric, handleLyric, speed);
+    //     currentLyric.current.play();
+    //     currentLineNum.current = 0;
+    //     currentLyric.current.seek(0);
+    //   })
+    //   .catch(() => {
+    //     currentLyric.current = "";
+    //     songReady.current = true;
+    //     audioRef.current.play();
+    //   });
+  };
+
   const handleError = () => {
     songReady.current = true;
     // handleNext();
@@ -100,6 +140,7 @@ function Player (props) {
           togglePlayList={togglePlayListDispatch}
         ></MiniPlayer>
       )}
+      <PlayList clearPreSong={setPreSong.bind(null, {})}></PlayList>
       <audio
         ref={audioRef}
         onTimeUpdate={updateTime}

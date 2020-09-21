@@ -12,6 +12,11 @@ function MiniPlayer (props) {
   const miniWrapperRef = useRef();
   const miniImageRef = useRef();
 
+  const handleTogglePlayList = useCallback((e) => {
+    togglePlayList(true);
+    e.stopPropagation();
+  }, [togglePlayList]);
+  
   return (
     <CSSTransition
       in={!full} 
@@ -41,6 +46,9 @@ function MiniPlayer (props) {
                 <i className="icon-mini iconfont icon-play" onClick={e => clickPlaying(e, true)}>&#xe61e;</i> 
               }
             </ProgressCircle>
+          </div>
+          <div className="control" onClick={handleTogglePlayList}>
+            <i className="iconfont">&#xe640;</i>
           </div>
         </MiniPlayerContainer>
     </CSSTransition>
