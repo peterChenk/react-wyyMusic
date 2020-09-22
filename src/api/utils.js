@@ -25,6 +25,14 @@ export const filterIndex = rankList => {
 //判断一个对象是否为空对象
 export const isEmptyObject = obj => !obj || Object.keys(obj).length === 0;
 
+//转换歌曲播放时间
+export const formatPlayTime = interval => {
+  interval = interval | 0;
+  const minute = (interval / 60) | 0;
+  const second = (interval % 60).toString().padStart(2, "0");
+  return `${minute}:${second}`;
+};
+
 //处理歌手列表拼接歌手名字
 export const getName = list => {
   let str = "";

@@ -7,6 +7,11 @@ export const changeCurrentSong = (data) => ({
   data: fromJS(data)
 });
 
+export const changeFullScreen =  (data) => ({
+  type: SET_FULL_SCREEN,
+  data
+});
+
 export const changeCurrentIndex = (data) => ({
   type: SET_CURRENT_INDEX,
   data
@@ -44,6 +49,11 @@ export const deleteSong = (data) => ({
 
 export const changePlayMode = (data) => ({
   type: SET_PLAY_MODE,
+  data
+});
+
+export const changeSpeed = (data) => ({
+  type: CHANGE_SPEED,
   data
 });
 
